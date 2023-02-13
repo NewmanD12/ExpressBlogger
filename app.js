@@ -5,6 +5,11 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
+require("dotenv").config()
+
+var { mongoConnect } = require('./mongo.js')
+mongoConnect()
+
 //setup router for each set of routes 
 // importing from routes/ folder 
 const indexRouter = require('./routes/index');

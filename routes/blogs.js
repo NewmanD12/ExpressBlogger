@@ -2,74 +2,147 @@ const express = require('express');
 const router = express.Router();
 
 var { validateBlogData } = require('../validation/blogs')
-
-const sampleBlogs = [
-    {
-          title: "dicta",
-      text: "Iusto et in et. Nulla accusantium fugit. Et qui dolorem inventore soluta et veritatis. Aut ut aut non laudantium eveniet suscipit odit. Sapiente sint nihil nihil sit et molestias. In nisi omnis quas et sed aut minus aperiam ea.\n \rLaudantium quo quisquam quae. Et et quas officia perspiciatis iusto sunt sunt eaque. Quidem sit voluptas deserunt sequi magni.\n \rEst est facere cumque ipsam omnis animi. Voluptatem magnam officiis architecto possimus. Quia similique aut eos qui. Quasi quae sed aliquam.",
-      author: "Darren Abbott",
-      category: ["Lorem", "sit", "amet"],
-      createdAt: "2022-03-22T10:36:37.176Z",
-      lastModified: "2022-03-22T10:36:37.176Z",
-    },
-    {
-          title: "ducimus",
-      text: "Placeat ea et fuga. Qui itaque quibusdam nam. Maxime nobis quam. Et laudantium sunt incidunt reiciendis.\n \rEarum aut sed omnis autem aliquam architecto corporis sint. Nostrum cumque voluptatem aperiam alias similique. Tenetur et esse omnis praesentium ipsum alias. Impedit rerum qui quia quaerat architecto mollitia est autem. Qui blanditiis earum et qui dolorum reprehenderit. Debitis est temporibus.\n \rEt nam sed. Corporis ut rerum. Ut qui dolore est dolorem ex.",
-      author: "Luke Rogahn PhD",
-      category: ["Lorem", "ipsum"],
-      createdAt: "2022-03-22T15:16:56.285Z",
-      lastModified: "2022-03-22T15:16:56.285Z",
-    },
-    {
-          title: "quod",
-      text: "Accusamus nisi eos. Tenetur earum tenetur nemo. Qui voluptas temporibus repellendus maxime. Ipsum optio voluptate enim nihil. Ea et dolorem. Omnis unde perspiciatis.\n \rUt odio eaque. Harum non placeat. Eveniet molestiae in cupiditate dolor doloremque rerum eligendi aut ab.\n \rMolestias eligendi et. Nemo velit natus autem numquam atque provident et nulla. In et dolores ad nihil. Delectus quis doloremque asperiores similique. Asperiores id nam vitae nobis labore autem. Dolor aperiam provident quia consectetur aut ut.",
-      author: "Maryann Schneider",
-      category: ["Lorem", "ipsum", "dolor", "sit", "amet"],
-      createdAt: "2022-03-21T20:09:32.298Z",
-      lastModified: "2022-03-21T20:09:32.298Z",
-    },
-    {
-          title: "ut",
-      text: "Itaque necessitatibus repudiandae. Porro suscipit exercitationem qui atque. Perferendis suscipit debitis sint aut dignissimos nobis ut. Modi ea nihil est vel consequuntur voluptatem. In magnam delectus in eos reiciendis sit est enim eligendi. Sint dicta at.\n \rConsectetur aspernatur alias sed non explicabo blanditiis laborum fugit voluptate. Reiciendis iste aut sit natus qui et in ratione. Placeat qui in voluptatum autem nulla ratione. Commodi sit alias sint sapiente rem. Quia sapiente minus deleniti vitae.\n \rExercitationem numquam omnis maxime dolorum sed deserunt suscipit laudantium. Ad et autem voluptatem esse laudantium et. Id fuga accusamus est sapiente dicta.",
-      author: "Dr. Lorenzo Anderson",
-      category: ["ipsum", "dolor", "sit", "amet"],
-      createdAt: "2022-03-21T23:07:53.447Z",
-      lastModified: "2022-03-21T23:07:53.447Z",
-    },
-    {
-          title: "id",
-      text: "Porro officia aliquid fugiat sed reprehenderit illo amet doloribus sed. Molestiae vero et. Quae voluptates dolores. Voluptatem facere fuga. Veniam perferendis illo ut sunt earum deleniti.\n \rIusto neque dolorem esse error. Saepe et quia ut corrupti. Autem repellendus similique dolorem sunt in ipsa perferendis. Et excepturi ut voluptatem deserunt accusantium dolores aperiam cum ut.\n \rDoloremque expedita sit et voluptatem unde libero. Numquam beatae sed repellat iusto doloribus fugit tenetur. Possimus et ut adipisci harum voluptatem provident consequatur. Corporis quo aut vel itaque blanditiis illum.",
-      author: "Bobbie Dach",
-      category: ["amet"],
-      createdAt: "2022-03-22T15:14:39.819Z",
-      lastModified: "2022-03-22T15:14:39.819Z",
-    },
-];
+const { db } = require('../mongo')
 
 router.get('/', function(req, res, next) {
     res.send('This is the index of the blogs page');
   });
 
-router.get('/all', function(req, res) {
-  res.json({
-    success : true,
-    blogs : sampleBlogs
-  });
+router.get('/all', async function(req, res) {
+  const blogs = await db()
+  .collection('sample_blogs')
+  .find({})
+  .toArray(function(err, result){
+      if (err) {
+        res.status(400).send("error fetching blogs")
+      } else {
+        res.json(result);
+      }
+    }); 
+
+    res.json({
+      success:true,
+      blogs: blogs
+    });
 });
 
-router.get('/single/:blogTitleToGet', (req, res) => {
+router.get('/get-one/:titleToFind', async (req, res) => {
+  const titleToFind = req.params.titleToFind
 
-    const title = req.params.blogTitleToGet
+  const blog = await db()
+  .collection('sample_blogs')
+  .find({
+    title : {
+      $eq : titleToFind
+    }
+  })
+  .toArray(function(err, result){
+    if (err) {
+      res.status(400).send("error fetching blog")
+    } else {
+      res.json(result);
+    }
+  }); 
 
-    const blogFound = sampleBlogs.find((blog) =>{
-        return blog.title === title
-    })
-    
-    res.json({
-        success : true, 
-        blog : blogFound
-    })
+  res.json({
+    success : true,
+    blog : blog
+  })
 })
+
+router.get('/get-one-by-id/:idToFind', async (req, res) => {
+  const idToFind = req.params.idToFind
+
+  const blog = await db()
+  .collection('sample_blogs')
+  .find({
+    id : {
+      $eq : idToFind
+    }
+  })
+  .toArray(function(err, result){
+    if (err) {
+      res.status(400).send("error fetching blog")
+    } else {
+      res.json(result);
+    }
+  }); 
+
+  res.json({
+    success : true,
+    blog : blog
+  })
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+router.get('/single/:blogTitleToGet', async (req, res) => {
+  const titleToFind = req.params.blogTitleToGet;
+  const dbConnect = db.getDb();
+  const blogQuery = { title : titleToFind};
+  const foundBlog = dbConnect
+                      .collection('sample_blogs')
+                      .find(blogQuery, (err, _result) => {
+                        if(err) {
+                          res
+                            .status(400)
+                            .send(`Error finding blog ${blogQuery.title}`)
+                        } else {
+                          res.status(200).send('1 document found')
+                        }
+                      })
+
+  res.json({
+    success:true,
+    foundBlog : foundBlog
+  });
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 router.delete('/delete/:blogTitleToDelete', (req, res) => {
     const title = req.params.blogTitleToDelete
