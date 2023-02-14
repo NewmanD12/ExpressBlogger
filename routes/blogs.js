@@ -74,6 +74,19 @@ router.get('/get-one-by-id/:idToFind', async (req, res) => {
   })
 })
 
+router.post('/create-one', async (req, res) => {
+  const blog = req.body
+  const entry = await db()
+    .collection('sample_blogs')
+    .insertOne(blog)
+
+
+  res.json({
+    success : true, 
+    newEntry : entry
+  })
+})
+
 
 
 
