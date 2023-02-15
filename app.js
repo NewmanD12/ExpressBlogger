@@ -7,8 +7,12 @@ const logger = require('morgan');
 
 require("dotenv").config()
 
+// connecting to mongoDB
 // var { mongoConnect } = require('./mongo.js')
 // mongoConnect()
+
+var { mongooseConnect } = require('./mongoose.js')
+mongooseConnect()
 
 //setup router for each set of routes 
 // importing from routes/ folder 
