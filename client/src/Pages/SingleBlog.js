@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom"
+import { useParams, useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
@@ -7,11 +7,12 @@ import Button from 'react-bootstrap/Button';
 import axios from "axios"
 
 
+
 const SingleBlog = (props) => {
     const { id } = useParams()
     const { urlEndPoint } = props
     const [blog, setBlog] = useState({})
-    const deleteEndPoint = `${urlEndPoint}/delete/${id}`
+    const navigate = useNavigate()
 
     useEffect(() => {
         axios.get(`${urlEndPoint}/get-one-by-id/${id}`)
@@ -23,14 +24,17 @@ const SingleBlog = (props) => {
                 })
     }, [])
 
-    // console.log(id)
-
-    // console.log(deleteEndPoint)
-
     const handleDeleteBlog = () => {
-        const res = axios.delete(deleteEndPoint)
-                        .then(res => console.log(res))
+        const res = axios.delete(`${urlEndPoint}/delete/${id}`)
+                        .then((res) => {
+                            console.log(res)
+                        },
+                        {
+                        'Content-Type': 'application/json'
+                        })
                         .catch(err => console.log(err))
+        
+        navigate('/')
     }
 
     console.log(blog)    
@@ -43,7 +47,7 @@ const SingleBlog = (props) => {
                     <p>{blog.text}</p>
                     <p><strong>Categories: </strong>{blog.categories}</p>
                     <Button className="m-3">Edit</Button>
-                    <Button className="m-3" >Delete</Button>
+                    <Button className="m-3" onClick={handleDeleteBlog}>Delete</Button>
                </Col> 
             </Row>
         </Container>
