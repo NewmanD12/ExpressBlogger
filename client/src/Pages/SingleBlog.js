@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button';
 import axios from "axios"
 
@@ -12,6 +13,12 @@ const SingleBlog = (props) => {
     const { id } = useParams()
     const { urlEndPoint } = props
     const [blog, setBlog] = useState({})
+    const [title, setTitle] = useState('')
+    const [text, setText] = useState('')
+    const [categories, setCategories] = useState([])
+    const [isEditing, setIsEditing] = useState(false);
+    const category_options = ['reality', 'tech', 'fintech', 'romance', 'comedy', 'food', 'travel', 'fashion', 'health', 'quia', 'corrupti', 'eaque']
+
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -37,17 +44,93 @@ const SingleBlog = (props) => {
         navigate('/')
     }
 
-    console.log(blog)    
+    const handleCheckboxes = (e) => {
+        const category = e.target.value
+        console.log(categories)
+        if(categories.includes(category)){
+            const filteredList = categories.filter((cat) => cat !== category)
+            setCategories(filteredList)
+        }
+        else {
+            setCategories([...categories, category])
+        }
+    }
+
+    const handleUpdateBlog = () => {
+        const req = {
+            title: title,
+            text: text, 
+            categories: categories
+        }
+
+        axios.put(`${urlEndPoint}/update-one/${blog._id}`, req)
+            .then((res) => console.log(res))
+            .catch((err) => console.log(err))
+
+        console.log(req)
+    }
+
 
     return (
         <Container>
             <Row className="justify-content-center">
                <Col md={6}>
-                    <h1>Title: {blog.title}</h1>
-                    <p>{blog.text}</p>
-                    <p><strong>Categories: </strong>{blog.categories}</p>
-                    <Button className="m-3">Edit</Button>
-                    <Button className="m-3" onClick={handleDeleteBlog}>Delete</Button>
+                    {!isEditing && <h1>Title: {blog.title}</h1>}
+                    {isEditing && (
+                        <input className="m-3" 
+                            type='text'
+                            value={title}
+                            placeholder={blog.title}
+                            onChange={(e) => {
+                                setTitle(e.target.value)
+                            }}
+                        />
+                    )}
+                    <br />
+                    {!isEditing && <p>{blog.text}</p>}
+                    {isEditing && (
+                        <textarea 
+                            className="m-3"
+                            value={text}
+                            placeholder={blog.text}
+                            rows='6'
+                            cols='55'
+                            onChange={(e) => {
+                                setText(e.target.value)
+                            }}
+                        />
+                    )}
+                    <br />
+                    {!isEditing && <p><strong>Categories: </strong>{blog.categories}</p>}
+                    {isEditing && <Form.Group className="m-4 text-start">
+                        <Form.Label>Categories:</Form.Label>
+                        {category_options.map((category, index) => {
+                            return <div key={index}>
+                                        <Form.Check 
+                                            type='checkbox'
+                                            label={category}
+                                            value={category}
+                                            onChange={handleCheckboxes}
+                                        />
+                                    </div>
+                        })}
+                    </Form.Group>}
+                    {!isEditing && <Button className="m-3" onClick={() => {
+                                                setIsEditing(true)
+                                                blog.categories = []
+                                            }}>
+                                        Edit
+                                    </Button>}
+                    {isEditing &&   <Button className="m-3" onClick={() => {
+                                                setIsEditing(false)
+                                                handleUpdateBlog()}}>
+                                        Update Blog
+                                    </Button>}
+                    {isEditing &&   <Button onClick={() => {setIsEditing(false)}}>
+                                        Cancel
+                                    </Button>}
+                    {!isEditing && <Button className="m-3" onClick={handleDeleteBlog}>                      Delete
+                                    </Button>}
                </Col> 
             </Row>
         </Container>

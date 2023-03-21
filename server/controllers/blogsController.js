@@ -85,7 +85,6 @@ async function findBlogById(req, res, next) {
                 success : true, 
                 blog : blog
             })
-
     }
     catch(e) {
         res.json({
@@ -111,7 +110,22 @@ async function deleteBlog(req, res, next) {
             error : e.toString()
         })
     }
+}
 
+async function updateOneBlog(req, res, next) {
+    const id = req.params.id
+    try {
+        const blog = await Blog.findByIdAndUpdate(id, req.body)
+        res.json({
+            success: true,
+            blog : blog
+        })
+    }
+    catch (e) {
+        res.json({
+            error : e.toString()
+        })
+    }
 }
 
 
@@ -120,5 +134,6 @@ module.exports = {
     createOneBlog,
     findBlogByTitle,
     findBlogById, 
-    deleteBlog
+    deleteBlog, 
+    updateOneBlog
 };

@@ -13,6 +13,7 @@ router.get('/', function(req, res, next) {
   });
 router.get('/all', blogsController.getAllBlogs)
 router.post('/create-one', blogsController.createOneBlog)
+router.put('/update-one/:id', blogsController.updateOneBlog)
 router.get('/get-one/:titleToFind', blogsController.findBlogByTitle)
 router.get('/get-one-by-id/:idToFind', blogsController.findBlogById)
 router.delete('/delete/:id', blogsController.deleteBlog)

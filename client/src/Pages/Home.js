@@ -10,7 +10,7 @@ const Home = (props) => {
 
     return (
         <div>
-            <h1>home page</h1>
+            <h1>This is all of the blogs.</h1>
             <Container>
 
                 {blogList.map((blog, index) => {
