@@ -76,6 +76,14 @@ const SingleBlog = (props) => {
         console.log(req)
     }
 
+    const Categories = () => {
+        if(blog.categories){
+            return (
+                <span>{blog.categories.join(', ')}</span>
+            )
+        }
+    }
+
 
     return (
         <Container>
@@ -107,7 +115,7 @@ const SingleBlog = (props) => {
                         />
                     )}
                     <br />
-                    {!isEditing && <p><strong>Categories: </strong>{blog.categories}</p>}
+                    {!isEditing && <p><strong>Categories: </strong><Categories/></p>}
                     {isEditing && <Form.Group className="m-4 text-start">
                         <Form.Label>Categories:</Form.Label>
                         {category_options.map((category, index) => {
