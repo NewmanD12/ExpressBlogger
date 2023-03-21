@@ -4,21 +4,19 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const cors = require('cors');
+
 
 require("dotenv").config()
-
-// connecting to mongoDB
-// var { mongoConnect } = require('./mongo.js')
-// mongoConnect()
 
 var { mongooseConnect } = require('./mongoose.js')
 mongooseConnect()
 
 //setup router for each set of routes 
 // importing from routes/ folder 
-const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
-const blogsRouter = require('./routes/blogs');
+// const indexRouter = require('./server/routes/index');
+const usersRouter = require('./server/routes/users');
+const blogsRouter = require('./server/routes/blogs');
 
 //instantiate the actual express app
 const app = express();
@@ -36,12 +34,15 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+app.use(cors({ origin: true, credentials: true}))
+app.options("*", cors());
+
 //for hosting static files: css, html, images etc. 
 app.use(express.static(path.join(__dirname, 'public'))); 
 
 //we bind (associate) the routers to routes in our application
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+// app.use('/', indexRouter);
+// app.use('/users', usersRouter);
 app.use('/blogs', blogsRouter);
 
 // catch 404 and forward to error handler
@@ -60,8 +61,10 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-// app.listen(port, () => {
-//   console.log(`ExpressBlogger app listening on port ${port}`)
-// })
+const port = process.env.PORT || 8000
+
+app.listen(port, () => {
+  console.log(`ExpressBlogger app listening on port ${port}`)
+})
 
 module.exports = app;

@@ -2,7 +2,7 @@ var express = require("express");
 const router = express.Router();
 
 // This is a named import (require). Since /validation/users.js is exporting a whole object with key/value pairs, the variable value that comes through the import will be that object. The easiest way to access the named functions is to write the key name in an object when you write the import (require) statement like this:
-var { validateUserData } = require("../validation/users");
+var { validateUserData } = require("../../validation/users");
 
 const userList = [];
 

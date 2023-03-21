@@ -7,8 +7,8 @@ const blogSchema = new mongoose.Schema({
     title: String,
     text: String, 
     author: String,
+    categories: [],
     year: Number,
-    categories: [String],
     id: {type: String, default: uuidv4()},
     createdAt: { type: Date, default: Date.now }
 }); 
