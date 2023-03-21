@@ -47,7 +47,12 @@ const NewBlogForm = (props) => {
           })
           .catch(function (error) {
             console.log(error);
-          });
+          })
+          .finally(()=> {
+                window.location.reload(false)
+                navigate('/')
+            }
+          );
           
     }   
 

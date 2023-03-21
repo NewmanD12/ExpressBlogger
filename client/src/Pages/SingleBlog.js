@@ -32,14 +32,17 @@ const SingleBlog = (props) => {
     }, [])
 
     const handleDeleteBlog = () => {
-        const res = axios.delete(`${urlEndPoint}/delete/${id}`)
-                        .then((res) => {
-                            console.log(res)
-                        },
-                        {
-                        'Content-Type': 'application/json'
-                        })
-                        .catch(err => console.log(err))
+        axios.delete(`${urlEndPoint}/delete/${id}`)
+            .then((res) => {
+                console.log(res)
+            },
+            {
+            'Content-Type': 'application/json'
+            })
+            .catch(err => console.log(err))
+            .finally(() => {
+                window.location.reload(false)
+            })
         
         navigate('/')
     }
@@ -66,6 +69,9 @@ const SingleBlog = (props) => {
         axios.put(`${urlEndPoint}/update-one/${blog._id}`, req)
             .then((res) => console.log(res))
             .catch((err) => console.log(err))
+            .finally(() => {
+                window.location.reload(false)
+            })
 
         console.log(req)
     }
