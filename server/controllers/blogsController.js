@@ -17,7 +17,7 @@ async function createOneBlog(req, res, next) {
       const title  = req.body.title 
       const text = req.body.text 
       const author = req.body.author
-      const categories = req.body.category
+      const categories = req.body.categories
       const year =  req.body.year;
   
       //pass fields to new Blog model 
@@ -76,7 +76,7 @@ async function findBlogById(req, res, next) {
     try {
         const blog = await Blog
             .find({
-                id : {
+                _id : {
                     $eq : id
                 }
             })
@@ -102,6 +102,7 @@ async function deleteBlog(req, res, next) {
         if(!deletedBlog) res.status(404).send('No item found')
         res.json({
             success : true,
+            id : req.params.id,
             message : "Blog deleted successfully"
         })
     } 
