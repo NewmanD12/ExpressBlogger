@@ -8,7 +8,6 @@ import Button from 'react-bootstrap/Button';
 import axios from "axios"
 
 
-
 const SingleBlog = (props) => {
     const { id } = useParams()
     const { urlEndPoint } = props
@@ -131,7 +130,6 @@ const SingleBlog = (props) => {
                     </Form.Group>}
                     {!isEditing && <Button className="m-3" onClick={() => {
                                                 setIsEditing(true)
-                                                blog.categories = []
                                             }}>
                                         Edit
                                     </Button>}
