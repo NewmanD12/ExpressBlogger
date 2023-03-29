@@ -1,16 +1,20 @@
 
 import './App.css';
 import Layout from './Layouts/Layout';
-import Home from './Pages/Home'
+import Welcome from './Pages/Register';
+import Dashboard from './Pages/Dashboard'
 import SingleBlog from './Pages/SingleBlog';
 import NewBlogForm from './Pages/NewBlogForm';
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Login from './Pages/Login';
+import Register from './Pages/Register';
 
 // const express = require('express');
 const urlEndPoint = process.env.REACT_APP_ENDPOINT
+const urlUserEndPoint = process.env.REACT_APP_USERS_ENDPOINT
 // console.log(urlEndPoint)
 
 function App() {
@@ -20,7 +24,7 @@ function App() {
   useEffect(() => {
     axios.get(`${urlEndPoint}/all`)
           .then((res) => {
-            // console.log(res.data.blogs)
+            // console.log(res)
             setBlogList(res.data.blogs)
           })
           .catch((err) => {
@@ -33,28 +37,36 @@ function App() {
   const router = createBrowserRouter([
     {
       path : '/',
-      element: <Layout />,
+      element: <Register />,
+    }, 
+    {
+      path : '/login',
+      element: <Login />,
+    },
+    {
+      path : '/dashboard',
+      element : <Layout />,
       children: [
-        {
-          index: true,
-          element: <Home 
-                      blogList={blogList}
-                    /> 
-        },
-        {
-          path : 'single-blog/:id',
-          element : <SingleBlog 
-                      urlEndPoint={urlEndPoint}
-                    />
-        },
-        {
-          path : 'create-new',
-          element : <NewBlogForm 
-                      urlEndPoint={urlEndPoint}
-                    />
-        }
-
-      ]
+          {
+            index : true,
+            element: <Dashboard 
+                        blogList={blogList}
+                      /> 
+          },
+          {
+            path : 'single-blog/:id',
+            element : <SingleBlog 
+                        urlEndPoint={urlEndPoint}
+                      />
+          },
+          {
+            path : 'create-new',
+            element : <NewBlogForm 
+                        urlEndPoint={urlEndPoint}
+                      />
+          }
+  
+        ]
     }
   ])
 

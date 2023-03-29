@@ -1,70 +1,103 @@
-var express = require("express");
+const express = require("express");
 const router = express.Router();
+const { uuid } = require("uuidv4");
+const {
+  generatePasswordHash,
+  validatePassword,
+  generateUserToken,
+  verifyToken,
+} = require("../../auth");
+const { json } = require("express");
 
-// This is a named import (require). Since /validation/users.js is exporting a whole object with key/value pairs, the variable value that comes through the import will be that object. The easiest way to access the named functions is to write the key name in an object when you write the import (require) statement like this:
-var { validateUserData } = require("../../validation/users");
+const userController = require('../controllers/usersController')
 
-const userList = [];
 
 /* GET users listing. */
-// Because our base path for users.js is "/users" and the route names concatenate, the final path for this route is going to be "localhost:3000/users/all"
-router.get("/all", function (req, res, next) {
-  res.send("respond with a resource");
-});
+router.get("/all", userController.getAllUsers);
+router.post("/registration", userController.createUser);
+router.post("/login", userController.loginUser);
 
-// The final url for this route is going to be "/users/single"
-router.get("/single", (req, res) => {
-  res.json({
-    success: true,
-    user: "Single User",
-  });
-});
+// router.post("/login", async (req, res) => {
+//   try {
+//     const email = req.body.email;
+//     const password = req.body.password;
+//     const user = await db().collection("users").findOne({
+//       email,
+//     });
 
-router.post("/create-one", (req, res) => {
+//     if (!user) {
+//       res.json({ success: false, message: "Could not find user." }).status(204);
+//       return;
+//     }
 
-  //try block, for validation code
-  try {
+//     const isPWValid = await validatePassword(password, user.password);
 
-    // anticipate fields of our post request /create-one
-    // parse out request data to local variables
-    const email = req.body.email;
-    const firstName = req.body.firstName;
-    const lastName = req.body.lastName;
-    const age = req.body.age;
-    const favoriteFoods = req.body.favoriteFoods;
+//     if (!isPWValid) {
+//       res
+//         .json({ success: false, message: "Password was incorrect." })
+//         .status(204);
+//       return;
+//     }
 
-    //create userData object fields
-    const userData = {
-      email,
-      firstName,
-      lastName,
-      age,
-      favoriteFoods,
-      fullName: firstName + lastName,
-      createdAt: new Date(),
-      lastModified: new Date(),
-    };
+//     const userType = email.includes("codeimmersives.com") ? "admin" : "user";
 
-    //pass user data object to our validate function
-    const userDataCheck = validateUserData(userData);
+//     const data = {
+//       date: new Date(),
+//       userId: user.id, 
+//       scope: userType,
+// 			email: email
+//     };
 
-    if (userDataCheck.isValid === false) {
-			throw Error(userDataCheck.message)
-    }
+//     const token = generateUserToken(data);
 
-    userList.push(userData);
+//     res.json({ success: true, token, email });
+//     return;
+//   } catch (error) {
+//     console.error(error);
+//     res.json({ success: false, message: error.toString() });
+//   }
+// });
 
-    console.log("userList ", userList);
+// router.get("/message", (req, res) => {
+//   try {
+//     const tokenHeaderKey = process.env.TOKEN_HEADER_KEY;
+//     // console.log(tokenHeaderKey)
 
-    res.json({
-      success: true,
-    });
-  } catch (e) {
-    res.json({
-			success: false,
-			error: String(e)
-		});
-  }
-});
+//     const token = req.header(tokenHeaderKey);
+
+// 		// console.log("token ", token)
+
+// 		const verifiedTokenPayload = verifyToken(token)
+
+//     if (!verifiedTokenPayload) {
+//       return res.json({
+//         success: false,
+//         message: "ID Token could not be verified",
+//       });
+//     }
+
+// 		// console.log(verifiedTokenPayload)
+//     const userData = verifiedTokenPayload.userData;
+
+//     if (userData && userData.scope === "user") {
+//       return res.json({
+//         success: true,
+//         message: `I am a normal user with the email: ${userData.email}`,
+//       });
+//     }
+
+// 		if (userData && userData.scope === "admin") {
+//       return res.json({
+//         success: true,
+//         message: `I am an admin user with the email ${userData.email}`,
+//       });
+//     }
+
+//     throw Error("Access Denied");
+//   } catch (error) {
+//     // Access Denied
+//     return res.status(401).json({ success: false, message: error });
+//   }
+// });
 
 module.exports = router;

@@ -5,7 +5,7 @@ const BlogCard = (props) => {
     const { blog } = props
     // console.log(blog)
 
-    const blog_url = `single-blog/${blog._id}`
+    const blog_url = `dashboard/single-blog/${blog._id}`
     // console.log(blog_url)
 
     return (
@@ -13,7 +13,10 @@ const BlogCard = (props) => {
         <Card style={{ width: '18rem' }}>
             <Card.Body>
                 <Card.Title>Blog Title: {blog.title}</Card.Title>
-                <Button variant="primary" href={blog_url}>See Details</Button>
+                <Button variant="primary" onClick={(e) => {
+                    console.log(blog_url)
+                    
+                }} href={blog_url}>See Details</Button>
             </Card.Body>
         </Card>
         

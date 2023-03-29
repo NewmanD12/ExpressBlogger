@@ -1,6 +1,7 @@
 import axios from "axios"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { useAuth } from '../Hooks/Auth'
 import Container from "react-bootstrap/Container"
 import Row from "react-bootstrap/Row"
 import Col from 'react-bootstrap/Col'
@@ -18,7 +19,12 @@ const NewBlogForm = (props) => {
     const [author, setAuthor] = useState('')
     const [categories, setCategories] = useState([])
     const [year, setYear] = useState('')
+    const auth = useAuth();
     const navigate = useNavigate();
+
+    if(auth.userToken === null){
+        navigate('/')
+    }
 
     const handleCheckboxes = (e) => {
         const category = e.target.value
@@ -50,7 +56,7 @@ const NewBlogForm = (props) => {
           })
           .finally(()=> {
                 window.location.reload(false)
-                navigate('/')
+                navigate('/dashboard')
             }
           );
           

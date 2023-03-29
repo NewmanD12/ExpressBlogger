@@ -1,13 +1,23 @@
 import BlogCard from "../Components/BlogCard"
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
+import { useAuth } from '../Hooks/Auth'
+import { useNavigate } from "react-router-dom"
+import { useEffect } from "react"
 
 
-const Home = (props) => {
+const Dashboard = (props) => {
+    
+
+    const auth = useAuth();
+    const navigate = useNavigate()
+
+    if(auth.userToken === null){
+        navigate('/')
+    }
 
     const { blogList } = props
-    // console.log(blogList)
-
+    
     return (
         <div>
             <Container>
@@ -26,4 +36,4 @@ const Home = (props) => {
     )
 }
 
-export default Home
+export default Dashboard

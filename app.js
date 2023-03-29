@@ -34,7 +34,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-app.use(cors({ origin: true, credentials: true}))
+app.use(cors());
 app.options("*", cors());
 
 //for hosting static files: css, html, images etc. 
@@ -42,7 +42,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //we bind (associate) the routers to routes in our application
 // app.use('/', indexRouter);
-// app.use('/users', usersRouter);
+app.use('/users', usersRouter);
 app.use('/blogs', blogsRouter);
 
 // catch 404 and forward to error handler
@@ -64,7 +64,7 @@ app.use(function(err, req, res, next) {
 const port = process.env.PORT || 8000
 
 app.listen(port, () => {
-  console.log(`ExpressBlogger app listening on port ${port}`)
+  console.log(`Blogger app listening on port ${port}`)
 })
 
 module.exports = app;

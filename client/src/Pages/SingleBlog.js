@@ -85,7 +85,7 @@ const SingleBlog = (props) => {
 
 
     return (
-        <Container>
+        <Container id='single-blog-container'>
             <Row className="justify-content-center">
                <Col md={6}>
                     {!isEditing && <h1>Title: {blog.title}</h1>}
