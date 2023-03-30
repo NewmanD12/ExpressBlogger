@@ -9,14 +9,14 @@ const cors = require('cors');
 
 require("dotenv").config()
 
-var { mongooseConnect } = require('./mongoose.js')
+const { mongooseConnect } = require('./mongoose.js')
 mongooseConnect()
 
 //setup router for each set of routes 
 // importing from routes/ folder 
 // const indexRouter = require('./server/routes/index');
-const usersRouter = require('./server/routes/users');
-const blogsRouter = require('./server/routes/blogs');
+const usersRouter = require('./routes/users');
+const blogsRouter = require('./routes/blogs');
 
 //instantiate the actual express app
 const app = express();

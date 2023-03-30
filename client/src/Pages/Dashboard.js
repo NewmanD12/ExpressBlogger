@@ -12,12 +12,14 @@ const Dashboard = (props) => {
     const auth = useAuth();
     const navigate = useNavigate()
 
-    if(auth.userToken === null){
-        navigate('/')
-    }
+    useEffect(() => {
+        if(auth.userToken === null){
+            navigate('/')
+        }
+    }, [])
 
     const { blogList } = props
-    
+
     return (
         <div>
             <Container>

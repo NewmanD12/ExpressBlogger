@@ -5,7 +5,7 @@ const {
     validatePassword,
     generateUserToken,
     verifyToken,
-  } = require("../../auth");
+  } = require("../auth");
 
 async function getAllUsers(req, res) {
     try {

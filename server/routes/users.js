@@ -6,7 +6,7 @@ const {
   validatePassword,
   generateUserToken,
   verifyToken,
-} = require("../../auth");
+} = require("../auth");
 const { json } = require("express");
 
 const userController = require('../controllers/usersController')

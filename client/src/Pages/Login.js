@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from '../Hooks/Auth'
 import Container from "react-bootstrap/Container"
@@ -16,9 +16,13 @@ const Login = (props) => {
     const [errorMessage, setErrorMessage] = useState('')
 	const navigate = useNavigate() // be able to navigate to home on login
 
-    if(auth.userToken !== null){
-        navigate('/dashboard')
-    }
+    
+    useEffect(() => {
+        if(auth.userToken !== null){
+            navigate('/dashboard')
+        }
+
+    }, [])
 
     return (
         <Container id='welcome-container' fluid='md'>
