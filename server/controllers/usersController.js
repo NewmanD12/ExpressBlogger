@@ -75,7 +75,7 @@ async function loginUser(req, res) {
             return;
         } 
 
-        const userType = email.includes("codeimmersives.com") ? "admin" : "user";
+        const userType = email.endsWith("@admin.com") ? "admin" : "user";
 
         const data = {
             date: new Date(),

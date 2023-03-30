@@ -45,6 +45,7 @@ const Register = (props) => {
       password : password
     })
     .then((res) => {
+      auth.login(email, password)
       console.log(res)
     })
     .catch((err) => {
@@ -90,6 +91,7 @@ const Register = (props) => {
             >
               Register
             </Button>
+
           </Form>
         </Col>
       </Row>
