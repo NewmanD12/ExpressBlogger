@@ -1,5 +1,5 @@
 import axios from "axios"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { useAuth } from '../Hooks/Auth'
 import Container from "react-bootstrap/Container"
@@ -22,9 +22,12 @@ const NewBlogForm = (props) => {
     const auth = useAuth();
     const navigate = useNavigate();
 
-    if(auth.userToken === null){
-        navigate('/')
-    }
+    // useEffect(() => {
+    //     if(!auth){
+    //         navigate('/')
+    //     }
+    // }, [])
+    // console.log(props)
 
     const handleCheckboxes = (e) => {
         const category = e.target.value

@@ -3,7 +3,7 @@ import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import { useAuth } from '../Hooks/Auth'
 import { useNavigate } from "react-router-dom"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 
 
 const Dashboard = (props) => {
@@ -11,14 +11,24 @@ const Dashboard = (props) => {
 
     const auth = useAuth();
     const navigate = useNavigate()
+    const { blogList, isLoggedIn, setIsLoggedIn } = props
 
-    useEffect(() => {
-        if(auth.userToken === null){
-            navigate('/')
-        }
-    }, [])
+    console.log(auth)
 
-    const { blogList } = props
+    const [loggedIn, setLoggedIn] = useState(null)
+    // useEffect(() => {
+    //     const loggedInUser = localStorage.getItem()
+    // })
+
+    // console.log(isLoggedIn)
+
+    // useEffect(() => {
+    //     if(!isLoggedIn){
+    //         navigate('/')
+    //     }
+    // }, [])
+    // console.log(props)
+
 
     return (
         <div>

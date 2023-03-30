@@ -8,21 +8,21 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import axios from "axios";
 
-const Login = (props) => {
-    const { urlEndPoint } = props
+const Login = () => {
     const auth = useAuth();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState('')
-	const navigate = useNavigate() // be able to navigate to home on login
+	  const navigate = useNavigate() // be able to navigate to home on login
 
-    
-    useEffect(() => {
-        if(auth.userToken !== null){
-            navigate('/dashboard')
-        }
 
-    }, [])
+  //   useEffect(() => {
+  //     if(auth){
+  //         navigate('/dashboard')
+  //     }
+  // }, [])
+
+    // console.log(props)
 
     return (
         <Container id='welcome-container' fluid='md'>

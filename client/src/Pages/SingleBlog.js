@@ -1,5 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
+import { useAuth } from '../Hooks/Auth'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
@@ -11,6 +12,7 @@ import axios from "axios"
 const SingleBlog = (props) => {
     const { id } = useParams()
     const { urlEndPoint } = props
+    const auth = useAuth()
     const [blog, setBlog] = useState({})
     const [title, setTitle] = useState('')
     const [text, setText] = useState('')
@@ -19,6 +21,13 @@ const SingleBlog = (props) => {
     const category_options = ['reality', 'tech', 'fintech', 'romance', 'comedy', 'food', 'travel', 'fashion', 'health', 'quia', 'corrupti', 'eaque']
 
     const navigate = useNavigate()
+
+    // useEffect(() => {
+    //     if(!auth){
+    //         navigate('/')
+    //     }
+    // }, [])
+    // console.log(props)
 
     useEffect(() => {
         axios.get(`${urlEndPoint}/get-one-by-id/${id}`)

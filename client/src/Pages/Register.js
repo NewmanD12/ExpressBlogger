@@ -10,8 +10,8 @@ import axios from "axios";
 
 
 const Register = (props) => {
-  const { urlEndPoint } = props
-  // console.log(urlEndPoint)
+  const { urlEndPoint, isLoggedIn, setIsLoggedIn } = props
+  // console.log(props)
   
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -19,12 +19,20 @@ const Register = (props) => {
   const auth = useAuth(); //access the authentication context 
 	const navigate = useNavigate() // be able to navigate to home on login
   
-  useEffect(() => {
-    if(auth.userToken !== null){
-        navigate('/dashboard')
-    }
+  // console.log(auth)
 
-}, [])
+  // useEffect(() => {
+  //   if(auth){
+  //       navigate('/dashboard')
+  //   }
+  // }, [])
+
+  // useEffect(() => {
+  //   if(auth.userToken !== null){
+  //       navigate('/dashboard')
+  //   }
+
+  // }, [])
   
   const handleSubmit = async (e) => {
     e.preventDefault()

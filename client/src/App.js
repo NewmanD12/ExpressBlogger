@@ -7,6 +7,7 @@ import SingleBlog from './Pages/SingleBlog';
 import NewBlogForm from './Pages/NewBlogForm';
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { useState, useEffect } from 'react';
+import { useAuth } from './Hooks/Auth';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Login from './Pages/Login';
@@ -20,6 +21,7 @@ const urlUserEndPoint = process.env.REACT_APP_USERS_ENDPOINT
 function App() {
 
   const [blogList, setBlogList] = useState([])
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
 
   useEffect(() => {
     axios.get(`${urlEndPoint}/all`)
@@ -32,16 +34,21 @@ function App() {
           })
   }, [])
 
+
+
   // console.log(blogList)
 
   const router = createBrowserRouter([
     {
       path : '/',
-      element: <Register />,
+      element:  <Register 
+                  urlEndPoint={urlUserEndPoint}
+                />,
     }, 
     {
       path : '/login',
-      element: <Login />,
+      element:  <Login
+                />,
     },
     {
       path : '/dashboard',
@@ -49,9 +56,9 @@ function App() {
       children: [
           {
             index : true,
-            element: <Dashboard 
+            element:  <Dashboard 
                         blogList={blogList}
-                      /> 
+                      />
           },
           {
             path : 'single-blog/:id',
@@ -72,7 +79,7 @@ function App() {
 
   return (
     <div className="App">
-      <RouterProvider router={router} />
+      <RouterProvider router={router}/>
     </div>
   );
 }
