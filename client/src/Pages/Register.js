@@ -36,9 +36,6 @@ const Register = (props) => {
   
   const handleSubmit = async (e) => {
     e.preventDefault()
-    // console.log(urlEndPoint)
-    // console.log(email)
-    // console.log(password)
     axios.post(`${urlEndPoint}/registration`, 
     {
       email : email,

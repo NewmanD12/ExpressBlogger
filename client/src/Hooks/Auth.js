@@ -91,7 +91,7 @@ export const useAuth = () => {
 };
 
 const registerUser = async (email, password) => {
-  const url = `${urlEndpoint}/registration`;
+  const url = `${urlEndpoint}/register`;
   console.log(url)
   const response = await fetch(url, {
     method: "POST",

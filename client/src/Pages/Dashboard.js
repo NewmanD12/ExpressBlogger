@@ -9,26 +9,16 @@ import { useEffect, useState } from "react"
 const Dashboard = (props) => {
     
 
-    const auth = useAuth();
+    
     const navigate = useNavigate()
-    const { blogList, isLoggedIn, setIsLoggedIn } = props
-
+    const { blogList} = props
+    const auth = useAuth()
     console.log(auth)
 
-    const [loggedIn, setLoggedIn] = useState(null)
-    // useEffect(() => {
-    //     const loggedInUser = localStorage.getItem()
-    // })
+    
 
-    // console.log(isLoggedIn)
-
-    // useEffect(() => {
-    //     if(!isLoggedIn){
-    //         navigate('/')
-    //     }
-    // }, [])
+    // console.log(auth)
     // console.log(props)
-
 
     return (
         <div>

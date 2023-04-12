@@ -21,7 +21,7 @@ const urlUserEndPoint = process.env.REACT_APP_USERS_ENDPOINT
 function App() {
 
   const [blogList, setBlogList] = useState([])
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [loggedIn, setLoggedIn] = useState(false)
 
   useEffect(() => {
     axios.get(`${urlEndPoint}/all`)
